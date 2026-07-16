@@ -1,6 +1,6 @@
 export const heroData = {
     badge: {
-        text: "New: A11ySense AI is now live",
+        text: "New: A11ySense AI is now lives",
         link: "/products/a11ysense-ai"
     },
     title: {
