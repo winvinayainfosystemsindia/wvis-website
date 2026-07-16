@@ -185,7 +185,7 @@ const Footer: React.FC = () => {
 						<Typography sx={{ ...theme.typography.footerHeader, mb: 2.5 }}>
 							Quick Links
 						</Typography>
-						<Stack spacing={1.75}>
+						<Stack spacing={1}>
 							{[
 								{ label: "Home", path: "/" },
 								{ label: "About Us", path: "/who-we-are" },
@@ -215,8 +215,8 @@ const Footer: React.FC = () => {
 												height: 18,
 												fontSize: "0.625rem",
 												fontWeight: 600,
-												bgcolor: "success.light",
-												color: "success.dark",
+												bgcolor: "#b5e3b5ff",
+												color: "#1a4d1aff",
 												"& .MuiChip-label": { px: 0.75 },
 											}}
 										/>
@@ -231,7 +231,7 @@ const Footer: React.FC = () => {
 						<Typography sx={{ ...theme.typography.footerHeader, mb: 2.5 }}>
 							IT Consultancy
 						</Typography>
-						<Stack spacing={1.75}>
+						<Stack spacing={1}>
 							{[
 								{ label: "Microsoft Power Platform Solutions", path: "/services/power-platform" },
 								{ label: "Corporate Training", path: "/services/corporate-training" },
@@ -262,7 +262,7 @@ const Footer: React.FC = () => {
 						<Typography sx={{ ...theme.typography.footerHeader, mb: 2.5 }}>
 							NGO Support
 						</Typography>
-						<Stack spacing={1.75}>
+						<Stack spacing={1}>
 							{[
 								{ label: "Custom Built MIS", path: "/services/custom-built-mis" },
 								{ label: "NGO Capacity Building", path: "/services/ngo-capacity" },
@@ -293,7 +293,7 @@ const Footer: React.FC = () => {
 						<Typography sx={{ ...theme.typography.footerHeader, mb: 2.5 }}>
 							Products
 						</Typography>
-						<Stack spacing={1.75}>
+						<Stack spacing={1}>
 							{[
 								{ label: "A11ySense AI", path: "/products/a11ysense-ai" },
 								{ label: "WinVinaya MIS", path: "/products/winvinaya-mis" },
