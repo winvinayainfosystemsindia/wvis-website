@@ -1,0 +1,191 @@
+/* =========================================================
+   RESPONSIVE SYSTEM - BREAKPOINTS, VARIABLES & KEYFRAMES
+
+   Breakpoints mirror the MUI theme (see muiTheme.ts):
+     xs: 0px      - phones (portrait)
+     sm: 600px    - phones (landscape) / small tablets
+     md: 900px    - tablets
+     lg: 1200px   - laptops / small desktops
+     xl: 1536px   - desktops
+     xxl: 1920px  - large / 4K monitors
+
+   Usage:
+   - Apply the .animate-* utility classes to any element to get
+     a breakpoint-aware entrance animation (distance/duration
+     automatically scale down on smaller screens).
+   - The --fade---scale-in-from custom properties can be
+     overridden on a per-component basis if a different
+     animation intensity is needed.*/
+/* ========================================================= */
+
+:root {
+  --fade-up-distance: 40px;
+  --fade-down-distance: -40px;
+  --fade-left-distance: -40px;
+  --fade-right-distance: 40px;
+  --scale-in-from: 0.92;
+  --animation-duration: 0.6s;
+}
+
+/* Tablets and small laptops */
+@media (max-width: 899.95px) {
+  :root {
+    --fade-up-distance: 24px;
+    --fade-down-distance: -24px;
+    --fade-left-distance: -24px;
+    --fade-right-distance: 24px;
+    --scale-in-from: 0.94;
+    --animation-duration: 0.5s;
+  }
+}
+
+/* Phones */
+@media (max-width: 599.95px) {
+  :root {
+    --fade-up-distance: 16px;
+    --fade-down-distance: -16px;
+    --fade-left-distance: -16px;
+    --fade-right-distance: 16px;
+    --scale-in-from: 0.96;
+    --animation-duration: 0.4s;
+  }
+}
+
+/* =========================================================
+   KEYFRAMES
+========================================================= */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(var(--fade-up-distance));
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(var(--fade-down-distance));
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(var(--fade-left-distance));
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes fadeInRight {
+  from {
+    opacity: 0;
+    transform: translateX(var(--fade-right-distance));
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(var(--scale-in-from));
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+@keyframes bounce {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(8px);
+  }
+}
+
+/* =========================================================
+   UTILITY CLASSES
+========================================================= */
+.animate-fade-in {
+  animation: fadeIn var(--animation-duration) ease forwards;
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp var(--animation-duration) ease forwards;
+}
+
+.animate-fade-in-down {
+  animation: fadeInDown var(--animation-duration) ease forwards;
+}
+
+.animate-fade-in-left {
+  animation: fadeInLeft var(--animation-duration) ease forwards;
+}
+
+.animate-fade-in-right {
+  animation: fadeInRight var(--animation-duration) ease forwards;
+}
+
+.animate-scale-in {
+  animation: scaleIn var(--animation-duration) ease forwards;
+}
+
+.animate-shimmer {
+  background-size: 200% 100%;
+  animation: shimmer 1.5s linear infinite;
+}
+
+.animate-bounce {
+  animation: bounce 1.8s ease-in-out infinite;
+}
+
+/* Respect users who've asked for reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .animate-fade-in,
+  .animate-fade-in-up,
+  .animate-fade-in-down,
+  .animate-fade-in-left,
+  .animate-fade-in-right,
+  .animate-scale-in,
+  .animate-shimmer,
+  .animate-bounce {
+    animation: none;
+    opacity: 1;
+    transform: none;
+    background-position: 0 0;
+  }
+}

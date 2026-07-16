@@ -1,0 +1,146 @@
+/* =========================================================
+   FRESHWORKS GRADIENT TEXT UTILITIES
+   
+   Usage:
+   - Add className="gradient-text" to any text element
+   - For headings: <h1 className="gradient-text">Your Text</h1>
+   - For spans: <span className="gradient-text">Your Text</span>
+========================================================= */
+
+/* Main Freshworks Gradient (Purple to Blue) */
+.gradient-text {
+	background-image: linear-gradient(239.93deg, #8512E0 43.93%, #002FFF 93.49%);
+	-webkit-background-clip: text;
+	-webkit-text-fill-color: transparent;
+	background-clip: text;
+	display: inline-block;
+}
+
+/* Reverse Gradient (Blue to Purple) */
+.gradient-text-reverse {
+	background-image: linear-gradient(239.93deg, #002FFF 43.93%, #8512E0 93.49%);
+	-webkit-background-clip: text;
+	-webkit-text-fill-color: transparent;
+	background-clip: text;
+	display: inline-block;
+}
+
+/* Horizontal Gradient (Left to Right) */
+.gradient-text-horizontal {
+	background-image: linear-gradient(90deg, #8512E0 0%, #002FFF 100%);
+	-webkit-background-clip: text;
+	-webkit-text-fill-color: transparent;
+	background-clip: text;
+	display: inline-block;
+}
+
+/* Animated Gradient */
+.gradient-text-animated {
+	background-image: linear-gradient(
+		239.93deg,
+		#8512E0 0%,
+		#002FFF 50%,
+		#8512E0 100%
+	);
+	background-size: 200% auto;
+	-webkit-background-clip: text;
+	-webkit-text-fill-color: transparent;
+	background-clip: text;
+	display: inline-block;
+	animation: gradient-shift 3s ease infinite;
+}
+
+@keyframes gradient-shift {
+	0% {
+		background-position: 0% center;
+	}
+	50% {
+		background-position: 100% center;
+	}
+	100% {
+		background-position: 0% center;
+	}
+}
+
+/* Subtle Gradient (Lower Opacity) */
+.gradient-text-subtle {
+	background-image: linear-gradient(239.93deg, #8512E0 43.93%, #002FFF 93.49%);
+	-webkit-background-clip: text;
+	-webkit-text-fill-color: transparent;
+	background-clip: text;
+	display: inline-block;
+	opacity: 0.8;
+}
+
+/* =========================================================
+   HELPER CLASSES
+========================================================= */
+
+/* Ensure gradient text works well with different font weights */
+.gradient-text-bold {
+	font-weight: 700;
+}
+
+.gradient-text-extra-bold {
+	font-weight: 800;
+}
+
+/* Responsive gradient text sizes */
+.gradient-text-hero {
+	font-size: 3.75rem; /* 60px */
+	line-height: 1.2;
+	font-weight: 700;
+}
+
+.gradient-text-large {
+	font-size: 2.5rem; /* 40px */
+	line-height: 1.3;
+	font-weight: 700;
+}
+
+.gradient-text-medium {
+	font-size: 2rem; /* 32px */
+	line-height: 1.4;
+	font-weight: 700;
+}
+
+/* Tablet responsive adjustments */
+@media (max-width: 899.95px) {
+	.gradient-text-hero {
+		font-size: 2.5rem; /* 40px */
+	}
+
+	.gradient-text-large {
+		font-size: 2rem; /* 32px */
+	}
+
+	.gradient-text-medium {
+		font-size: 1.5rem; /* 24px */
+	}
+}
+
+/* Phone responsive adjustments */
+@media (max-width: 599.95px) {
+	.gradient-text-hero {
+		font-size: 2rem; /* 32px */
+	}
+
+	.gradient-text-large {
+		font-size: 1.625rem; /* 26px */
+	}
+
+	.gradient-text-medium {
+		font-size: 1.25rem; /* 20px */
+	}
+}
+
+/* Small phone responsive adjustments */
+@media (max-width: 374.95px) {
+	.gradient-text-hero {
+		font-size: 1.75rem; /* 28px */
+	}
+
+	.gradient-text-large {
+		font-size: 1.375rem; /* 22px */
+	}
+}
