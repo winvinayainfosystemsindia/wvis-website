@@ -10,3 +10,7 @@ export const getNewsletterBySlug = async (slug: string): Promise<NewsletterIssue
 	const { data } = await apiClient.get<NewsletterIssue>(`/newsletters/${slug}`);
 	return data;
 };
+
+export const subscribeToNewsletter = async (email: string): Promise<void> => {
+	await apiClient.post('/comms/newsletter', { email });
+};

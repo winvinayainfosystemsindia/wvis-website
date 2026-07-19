@@ -29,6 +29,13 @@ interface NewsletterFormDialogProps {
 
 const todayISO = () => new Date().toISOString().split('T')[0];
 
+const MAX_DESCRIPTION_WORDS = 250;
+
+const countWords = (text: string): number => {
+	const trimmed = text.trim();
+	return trimmed ? trimmed.split(/\s+/).length : 0;
+};
+
 const NewsletterFormDialog: React.FC<NewsletterFormDialogProps> = ({ open, issue, onClose, onSaved }) => {
 	const isEditing = Boolean(issue);
 
@@ -73,6 +80,9 @@ const NewsletterFormDialog: React.FC<NewsletterFormDialogProps> = ({ open, issue
 
 	const coverPreviewUrl = coverObjectUrl ?? (issue ? toMediaUrl(issue.cover_image_path) : null);
 
+	const descriptionWordCount = countWords(description);
+	const isDescriptionTooLong = descriptionWordCount > MAX_DESCRIPTION_WORDS;
+
 	const handleSubmit = async (event: React.FormEvent) => {
 		event.preventDefault();
 		if (!title.trim()) {
@@ -81,6 +91,10 @@ const NewsletterFormDialog: React.FC<NewsletterFormDialogProps> = ({ open, issue
 		}
 		if (!isEditing && (!coverImage || !pdfFile)) {
 			setError('Please select both a cover image and a PDF file.');
+			return;
+		}
+		if (isDescriptionTooLong) {
+			setError(`Description is too long — keep it under ${MAX_DESCRIPTION_WORDS} words.`);
 			return;
 		}
 
@@ -134,6 +148,8 @@ const NewsletterFormDialog: React.FC<NewsletterFormDialogProps> = ({ open, issue
 							minRows={3}
 							value={description}
 							onChange={(e) => setDescription(e.target.value)}
+							error={isDescriptionTooLong}
+							helperText={`${descriptionWordCount} / ${MAX_DESCRIPTION_WORDS} words`}
 						/>
 						<TextField
 							label="Published Date"
