@@ -53,7 +53,11 @@ pm2 delete $APP_NAME || true
 # Create virtual environment if missing
 if [ ! -d "venv-$ENV" ]; then
     echo "🐍 Creating virtual environment (venv-$ENV)..."
-    python3 -m venv venv-$ENV
+    if command -v python3.11 &> /dev/null; then
+        python3.11 -m venv venv-$ENV
+    else
+        python3 -m venv venv-$ENV
+    fi
 fi
 
 # Activate virtual environment

@@ -16,15 +16,15 @@ fi
 # Environment-specific configurations
 case $ENV in
     dev)
-        DEPLOY_DIR="/var/www/wvis/frontend/dist-dev"
+        DEPLOY_DIR="/var/www/wvis-website/frontend/dist-dev"
         ENV_FILE=".env.dev"
         ;;
     qa)
-        DEPLOY_DIR="/var/www/wvis/frontend/dist-qa"
+        DEPLOY_DIR="/var/www/wvis-website/frontend/dist-qa"
         ENV_FILE=".env.qa"
         ;;
     prod)
-        DEPLOY_DIR="/var/www/wvis/frontend/dist-prod"
+        DEPLOY_DIR="/var/www/wvis-website/frontend/dist-prod"
         ENV_FILE=".env.prod"
         ;;
     *)
