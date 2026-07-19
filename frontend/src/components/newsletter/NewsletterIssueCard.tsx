@@ -1,6 +1,6 @@
 import React from 'react';
-import { Card, CardMedia, CardContent, Typography, Button, Stack, alpha, useTheme } from '@mui/material';
-import { PictureAsPdf, CalendarMonth } from '@mui/icons-material';
+import { Card, CardActionArea, CardMedia, CardContent, Typography, Stack, alpha, useTheme } from '@mui/material';
+import { CalendarMonth } from '@mui/icons-material';
 import { toMediaUrl } from '../../services/apiClient';
 import type { NewsletterIssue } from '../../models/newsletter';
 
@@ -23,8 +23,6 @@ const NewsletterIssueCard: React.FC<NewsletterIssueCardProps> = ({ issue }) => {
 				border: '1px solid',
 				borderColor: 'divider',
 				height: '100%',
-				display: 'flex',
-				flexDirection: 'column',
 				transition: 'all 0.3s ease',
 				'&:hover': {
 					transform: 'translateY(-5px)',
@@ -33,53 +31,50 @@ const NewsletterIssueCard: React.FC<NewsletterIssueCardProps> = ({ issue }) => {
 				},
 			}}
 		>
-			<CardMedia
-				component="img"
-				height="220"
-				image={toMediaUrl(issue.cover_image_path)}
-				alt={issue.title}
-				sx={{ objectFit: 'cover' }}
-			/>
-			<CardContent sx={{ p: 3, flexGrow: 1, display: 'flex', flexDirection: 'column' }}>
-				<Stack direction="row" spacing={1} alignItems="center" sx={{ mb: 1.5, color: 'text.secondary' }}>
-					<CalendarMonth fontSize="small" />
-					<Typography variant="caption" sx={{ fontWeight: 600 }}>
-						{formatDate(issue.published_date)}
+			<CardActionArea
+				component="a"
+				href={toMediaUrl(issue.pdf_path)}
+				target="_blank"
+				rel="noopener noreferrer"
+				sx={{ height: '100%', display: 'flex', flexDirection: 'column', alignItems: 'stretch' }}
+			>
+				<CardMedia
+					component="img"
+					height="170"
+					image={toMediaUrl(issue.cover_image_path)}
+					alt={issue.title}
+					sx={{ objectFit: 'cover' }}
+				/>
+				<CardContent sx={{ p: 2.5, flexGrow: 1, display: 'flex', flexDirection: 'column' }}>
+					<Stack direction="row" spacing={1} alignItems="center" sx={{ mb: 1.5, color: 'text.secondary' }}>
+						<CalendarMonth fontSize="small" />
+						<Typography variant="caption" sx={{ fontWeight: 600 }}>
+							{formatDate(issue.published_date)}
+						</Typography>
+					</Stack>
+
+					<Typography variant="h6" sx={{ fontWeight: 800, mb: 1.5, lineHeight: 1.3 }}>
+						{issue.title}
 					</Typography>
-				</Stack>
 
-				<Typography variant="h6" sx={{ fontWeight: 800, mb: 1.5, lineHeight: 1.3 }}>
-					{issue.title}
-				</Typography>
-
-				{issue.description && (
-					<Typography
-						variant="body2"
-						color="text.secondary"
-						sx={{
-							mb: 3,
-							flexGrow: 1,
-							display: '-webkit-box',
-							WebkitLineClamp: 3,
-							WebkitBoxOrient: 'vertical',
-							overflow: 'hidden',
-						}}
-					>
-						{issue.description}
-					</Typography>
-				)}
-
-				<Button
-					variant="outlined"
-					startIcon={<PictureAsPdf />}
-					href={toMediaUrl(issue.pdf_path)}
-					target="_blank"
-					rel="noopener noreferrer"
-					sx={{ mt: 'auto', alignSelf: 'flex-start', borderRadius: 2 }}
-				>
-					Download PDF
-				</Button>
-			</CardContent>
+					{issue.description && (
+						<Typography
+							variant="body2"
+							color="text.secondary"
+							sx={{
+								mb: 2,
+								flexGrow: 1,
+								display: '-webkit-box',
+								WebkitLineClamp: 3,
+								WebkitBoxOrient: 'vertical',
+								overflow: 'hidden',
+							}}
+						>
+							{issue.description}
+						</Typography>
+					)}
+				</CardContent>
+			</CardActionArea>
 		</Card>
 	);
 };
