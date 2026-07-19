@@ -13,6 +13,8 @@ import AiInvoiceExtraction from '../pages/products/AiInvoiceExtraction';
 import A11ySenseAI from '../pages/products/A11ySenseAI';
 import WinVinayaMIS from '../pages/products/WinVinayaMIS';
 import ServiceDetail from '../pages/services/ServiceDetail';
+import Contact from '../pages/Contact';
+import Demo from '../pages/Demo';
 
 const AppRouter: React.FC = () => {
 	return (
@@ -27,6 +29,8 @@ const AppRouter: React.FC = () => {
 			<Route path="/products/a11ysense-ai" element={<A11ySenseAI />} />
 			<Route path="/products/winvinaya-mis" element={<WinVinayaMIS />} />
 			<Route path="/services/:serviceId" element={<ServiceDetail />} />
+			<Route path="/contact" element={<Contact />} />
+			<Route path="/demo" element={<Demo />} />
 			<Route path="/terms-of-service" element={<TermsOfService />} />
 			<Route path="/privacy-policy" element={<PrivacyPolicy />} />
 			<Route path="/maintenance" element={<Maintenance />} />
