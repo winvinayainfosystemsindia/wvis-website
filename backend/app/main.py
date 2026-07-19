@@ -1,5 +1,7 @@
+from pathlib import Path
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
 from app.core.config import settings
 
 def get_application() -> FastAPI:
@@ -15,6 +17,9 @@ def get_application() -> FastAPI:
         allow_methods=["*"],
         allow_headers=["*"],
     )
+
+    Path(settings.UPLOAD_DIR).mkdir(parents=True, exist_ok=True)
+    _app.mount(f"{settings.API_V1_STR}/media", StaticFiles(directory=settings.UPLOAD_DIR), name="media")
 
     @_app.get("/")
     async def root():

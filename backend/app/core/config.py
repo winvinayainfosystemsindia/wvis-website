@@ -80,6 +80,10 @@ class Settings(BaseSettings):
     EMAILS_FROM_EMAIL: str = ""
     EMAILS_FROM_NAME: str = ""
     CONTACT_NOTIFY_EMAIL: str = "info@winvinaya.com"
+
+    # FILE UPLOADS
+    UPLOAD_DIR: str = "uploads"
+    MAX_UPLOAD_SIZE: int = 10_485_760  # 10MB
     
     # PAGINATION
 

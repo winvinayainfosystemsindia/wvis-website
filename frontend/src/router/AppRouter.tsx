@@ -15,6 +15,10 @@ import WinVinayaMIS from '../pages/products/WinVinayaMIS';
 import ServiceDetail from '../pages/services/ServiceDetail';
 import Contact from '../pages/Contact';
 import Demo from '../pages/Demo';
+import Newsletter from '../pages/resources/Newsletter';
+import AdminLogin from '../pages/admin/AdminLogin';
+import NewsletterManager from '../pages/admin/NewsletterManager';
+import ProtectedRoute from '../components/admin/ProtectedRoute';
 
 const AppRouter: React.FC = () => {
 	return (
@@ -31,6 +35,16 @@ const AppRouter: React.FC = () => {
 			<Route path="/services/:serviceId" element={<ServiceDetail />} />
 			<Route path="/contact" element={<Contact />} />
 			<Route path="/demo" element={<Demo />} />
+			<Route path="/resources/newsletter" element={<Newsletter />} />
+			<Route path="/admin/login" element={<AdminLogin />} />
+			<Route
+				path="/admin/newsletters"
+				element={
+					<ProtectedRoute>
+						<NewsletterManager />
+					</ProtectedRoute>
+				}
+			/>
 			<Route path="/terms-of-service" element={<TermsOfService />} />
 			<Route path="/privacy-policy" element={<PrivacyPolicy />} />
 			<Route path="/maintenance" element={<Maintenance />} />

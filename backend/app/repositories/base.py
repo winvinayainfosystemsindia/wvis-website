@@ -38,6 +38,7 @@ class BaseRepository(Generic[ModelType]):
         
         self.db.add(db_obj)
         await self.db.flush()
+        await self.db.refresh(db_obj)
         return db_obj
 
     async def remove(self, *, id: int) -> Optional[ModelType]:
@@ -47,6 +48,7 @@ class BaseRepository(Generic[ModelType]):
             db_obj.soft_delete()
             self.db.add(db_obj)
             await self.db.flush()
+            await self.db.refresh(db_obj)
         return db_obj
 
     async def count(self) -> int:
