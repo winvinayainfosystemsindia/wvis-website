@@ -1,7 +1,7 @@
 import React, { type ReactNode } from 'react';
 import { useNavigate, useLocation, Link as RouterLink } from 'react-router-dom';
 import { AppBar, Toolbar, Typography, Button, Box, Container, Chip, Stack, alpha, useTheme } from '@mui/material';
-import { Logout, Newspaper, Article } from '@mui/icons-material';
+import { Logout, Newspaper, Article, RocketLaunch, MailOutline } from '@mui/icons-material';
 import { useAppDispatch, useAppSelector } from '../hooks/reduxHooks';
 import { loggedOut } from '../store/authSlice';
 import { clearToken } from '../services/tokenStore';
@@ -13,6 +13,8 @@ interface AdminLayoutProps {
 const NAV_LINKS = [
 	{ label: 'Newsletters', path: '/admin/newsletters', icon: <Newspaper fontSize="small" /> },
 	{ label: 'Blogs', path: '/admin/blogs', icon: <Article fontSize="small" /> },
+	{ label: 'Demo Requests', path: '/admin/demo-requests', icon: <RocketLaunch fontSize="small" /> },
+	{ label: 'Contacts', path: '/admin/contacts', icon: <MailOutline fontSize="small" /> },
 ];
 
 const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {

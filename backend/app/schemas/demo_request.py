@@ -20,3 +20,6 @@ class DemoRequestCreate(DemoRequestBase):
 class DemoRequest(DemoRequestBase, TimestampSchema):
     id: int
     is_processed: bool = False
+
+class DemoRequestStatusUpdate(BaseSchema):
+    is_processed: bool

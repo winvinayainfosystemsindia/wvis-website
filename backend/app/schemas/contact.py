@@ -14,3 +14,6 @@ class ContactCreate(ContactBase):
 class Contact(ContactBase, TimestampSchema):
     id: int
     is_processed: bool = False
+
+class ContactStatusUpdate(BaseSchema):
+    is_processed: bool

@@ -21,6 +21,8 @@ import BlogDetail from '../pages/resources/BlogDetail';
 import AdminLogin from '../pages/admin/AdminLogin';
 import NewsletterManager from '../pages/admin/NewsletterManager';
 import BlogManager from '../pages/admin/BlogManager';
+import ContactsManager from '../pages/admin/ContactsManager';
+import DemoRequestsManager from '../pages/admin/DemoRequestsManager';
 import ProtectedRoute from '../components/admin/ProtectedRoute';
 
 const AppRouter: React.FC = () => {
@@ -55,6 +57,22 @@ const AppRouter: React.FC = () => {
 				element={
 					<ProtectedRoute>
 						<BlogManager />
+					</ProtectedRoute>
+				}
+			/>
+			<Route
+				path="/admin/demo-requests"
+				element={
+					<ProtectedRoute>
+						<DemoRequestsManager />
+					</ProtectedRoute>
+				}
+			/>
+			<Route
+				path="/admin/contacts"
+				element={
+					<ProtectedRoute>
+						<ContactsManager />
 					</ProtectedRoute>
 				}
 			/>
