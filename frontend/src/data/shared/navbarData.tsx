@@ -288,14 +288,14 @@ export const NAV_MENU_ITEMS = {
 			icon: <Work />,
 		},
 	],
-	ourTeam: [
-		{
-			label: 'Leadership',
-			description: 'Meet our leaders',
-			path: '/team/leadership',
-			icon: <Diversity1 />,
-		},
-	]
+	// ourTeam: [
+	// 	{
+	// 		label: 'Leadership',
+	// 		description: 'Meet our leaders',
+	// 		path: '/team/leadership',
+	// 		icon: <Diversity1 />,
+	// 	},
+	// ]
 };
 
 export const CTA_BUTTONS = [
@@ -321,5 +321,5 @@ export const NAV_ITEMS: TopNavItem[] = [
 	{ label: 'Our Solutions', megaMenu: 'ourSolutions', activePrefix: '/our-solutions' },
 	{ label: 'Resources', megaMenu: 'resources', activePrefix: '/resources' },
 	{ label: 'Careers', path: '/careers', activePrefix: '/careers' },
-	{ label: 'Our Team', path: '/our-team', activePrefix: '/our-team' },
+	// { label: 'Our Team', path: '/our-team', activePrefix: '/our-team' },
 ];

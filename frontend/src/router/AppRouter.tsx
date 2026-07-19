@@ -6,7 +6,7 @@ import NotFound from '../pages/common/NotFound';
 import Maintenance from '../pages/common/Maintenance';
 import TermsOfService from '../pages/policy/TermsOfService';
 import PrivacyPolicy from '../pages/policy/PrivacyPolicy';
-import OurTeam from '../pages/OurTeam';
+// import OurTeam from '../pages/OurTeam';
 import Careers from '../pages/Careers';
 import NammAcademy from '../pages/products/NammAcademy';
 import AiInvoiceExtraction from '../pages/products/AiInvoiceExtraction';
@@ -19,7 +19,7 @@ const AppRouter: React.FC = () => {
 		<Routes>
 			<Route path="/" element={<Home />} />
 			<Route path="/who-we-are" element={<WhoWeAre />} />
-			<Route path="/our-team" element={<OurTeam />} />
+			{/* <Route path="/our-team" element={<OurTeam />} /> */}
 			<Route path="/careers" element={<Careers />} />
 			<Route path="/products/nammacademy" element={<NammAcademy />} />
 			<Route path="/products/invoice-intelligence" element={<AiInvoiceExtraction />} />

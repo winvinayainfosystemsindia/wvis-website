@@ -68,7 +68,7 @@ const Navbar: React.FC = () => {
 
 	const whoWeAreItem = NAV_ITEMS.find((i) => i.label === 'Who We Are')!;
 	const careersItem = NAV_ITEMS.find((i) => i.label === 'Careers')!;
-	const ourTeamItem = NAV_ITEMS.find((i) => i.label === 'Our Team')!;
+	// const ourTeamItem = NAV_ITEMS.find((i) => i.label === 'Our Team')!;
 
 	return (
 		<>
@@ -284,9 +284,9 @@ const Navbar: React.FC = () => {
 					</ListItemButton>
 
 					{/* Our Team */}
-					<ListItemButton component={RouterLink} to={ourTeamItem.path!} onClick={handleCloseAll} sx={{ borderRadius: 1.5 }}>
+					{/* <ListItemButton component={RouterLink} to={ourTeamItem.path!} onClick={handleCloseAll} sx={{ borderRadius: 1.5 }}>
 						<ListItemText primary={ourTeamItem.label} primaryTypographyProps={{ fontWeight: 600 }} />
-					</ListItemButton>
+					</ListItemButton> */}
 
 					<Box sx={{ mt: 3, px: 2, display: 'flex', flexDirection: 'column', gap: 1.5 }}>
 						{CTA_BUTTONS.map((btn) => (
