@@ -9,5 +9,4 @@ class DemoRequestService:
         self.repository = DemoRequestRepository(db)
 
     async def create_demo_request(self, demo_request_in: DemoRequestCreate) -> DemoRequest:
-        # Here you could add logic to send email notifications to the sales team
         return await self.repository.create(obj_in=demo_request_in.model_dump())

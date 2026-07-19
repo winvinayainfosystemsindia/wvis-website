@@ -9,5 +9,4 @@ class ContactService:
         self.repository = ContactRepository(db)
 
     async def create_contact(self, contact_in: ContactCreate) -> Contact:
-        # Here you could add logic to send email notifications
         return await self.repository.create(obj_in=contact_in.model_dump())

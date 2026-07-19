@@ -79,6 +79,7 @@ class Settings(BaseSettings):
     SMTP_PASSWORD: str = ""
     EMAILS_FROM_EMAIL: str = ""
     EMAILS_FROM_NAME: str = ""
+    CONTACT_NOTIFY_EMAIL: str = "info@winvinaya.com"
     
     # PAGINATION
 
