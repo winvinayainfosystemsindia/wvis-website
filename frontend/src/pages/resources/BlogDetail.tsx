@@ -1,13 +1,13 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useParams, Link as RouterLink } from 'react-router-dom';
 import { Box, Container, Typography, Stack, Alert, CircularProgress, Button, alpha, useTheme } from '@mui/material';
 import { ArrowBack } from '@mui/icons-material';
 import DOMPurify from 'dompurify';
 import MainLayout from '../../components/layout/MainLayout';
-import { getBlogBySlug } from '../../services/blogService';
-import { toMediaUrl, getApiErrorMessage } from '../../services/apiClient';
+import { toMediaUrl } from '../../services/apiClient';
 import { getReadingTime } from '../../utils/readingTime';
-import type { BlogPost } from '../../models/blog';
+import { useAppDispatch, useAppSelector } from '../../hooks/reduxHooks';
+import { fetchBlogBySlug, clearBlogDetail } from '../../store/blogSlice';
 
 const formatDate = (iso: string) =>
 	new Date(iso).toLocaleDateString('en-IN', { year: 'numeric', month: 'long', day: 'numeric' });
@@ -15,29 +15,19 @@ const formatDate = (iso: string) =>
 const BlogDetail: React.FC = () => {
 	const { slug } = useParams<{ slug: string }>();
 	const theme = useTheme();
-	const [post, setPost] = useState<BlogPost | null>(null);
-	const [loading, setLoading] = useState(true);
-	const [error, setError] = useState<string | null>(null);
+	const dispatch = useAppDispatch();
+	const post = useAppSelector((state) => state.blogs.publicDetail);
+	const status = useAppSelector((state) => state.blogs.publicDetailStatus);
+	const error = useAppSelector((state) => state.blogs.publicDetailError);
+	const loading = status === 'idle' || status === 'loading';
 
 	useEffect(() => {
 		if (!slug) return;
-		let isMounted = true;
-		(async () => {
-			setLoading(true);
-			setError(null);
-			try {
-				const data = await getBlogBySlug(slug);
-				if (isMounted) setPost(data);
-			} catch (err) {
-				if (isMounted) setError(getApiErrorMessage(err, 'This article could not be found.'));
-			} finally {
-				if (isMounted) setLoading(false);
-			}
-		})();
+		dispatch(fetchBlogBySlug(slug));
 		return () => {
-			isMounted = false;
+			dispatch(clearBlogDetail());
 		};
-	}, [slug]);
+	}, [slug, dispatch]);
 
 	if (loading) {
 		return (

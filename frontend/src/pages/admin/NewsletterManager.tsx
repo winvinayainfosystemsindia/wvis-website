@@ -20,32 +20,27 @@ import {
 import { Add, Edit, Delete } from '@mui/icons-material';
 import AdminLayout from '../../layouts/AdminLayout';
 import NewsletterFormDialog from '../../components/admin/NewsletterFormDialog';
-import { listAllNewsletters, updateNewsletter, deleteNewsletter } from '../../services/adminNewsletterService';
-import { toMediaUrl, getApiErrorMessage } from '../../services/apiClient';
+import { useAppDispatch, useAppSelector } from '../../hooks/reduxHooks';
+import { fetchNewslettersAdmin, updateNewsletterThunk, removeNewsletterThunk } from '../../store/newsletterSlice';
+import { toMediaUrl } from '../../services/apiClient';
 import type { NewsletterIssue } from '../../models/newsletter';
 
 const formatDate = (iso: string) => new Date(iso).toLocaleDateString('en-IN', { year: 'numeric', month: 'short', day: 'numeric' });
 
 const NewsletterManager: React.FC = () => {
-	const [issues, setIssues] = useState<NewsletterIssue[]>([]);
-	const [loading, setLoading] = useState(true);
-	const [error, setError] = useState<string | null>(null);
+	const dispatch = useAppDispatch();
+	const { adminItems: issues, adminStatus, adminError } = useAppSelector((state) => state.newsletters);
 	const [dialogOpen, setDialogOpen] = useState(false);
 	const [editingIssue, setEditingIssue] = useState<NewsletterIssue | null>(null);
 	const [busyId, setBusyId] = useState<number | null>(null);
+	const [localError, setLocalError] = useState<string | null>(null);
 
-	const fetchIssues = useCallback(async () => {
-		setLoading(true);
-		setError(null);
-		try {
-			const data = await listAllNewsletters();
-			setIssues(data);
-		} catch (err) {
-			setError(getApiErrorMessage(err, 'Unable to load newsletters.'));
-		} finally {
-			setLoading(false);
-		}
-	}, []);
+	const loading = adminStatus === 'loading' || adminStatus === 'idle';
+	const error = localError || adminError;
+
+	const fetchIssues = useCallback(() => {
+		dispatch(fetchNewslettersAdmin());
+	}, [dispatch]);
 
 	useEffect(() => {
 		fetchIssues();
@@ -63,16 +58,15 @@ const NewsletterManager: React.FC = () => {
 
 	const handleSaved = () => {
 		setDialogOpen(false);
-		fetchIssues();
 	};
 
 	const handleTogglePublish = async (issue: NewsletterIssue) => {
 		setBusyId(issue.id);
+		setLocalError(null);
 		try {
-			await updateNewsletter(issue.id, { is_published: !issue.is_published });
-			await fetchIssues();
+			await dispatch(updateNewsletterThunk({ id: issue.id, payload: { is_published: !issue.is_published } })).unwrap();
 		} catch (err) {
-			setError(getApiErrorMessage(err, 'Unable to update newsletter status.'));
+			setLocalError(err as string);
 		} finally {
 			setBusyId(null);
 		}
@@ -81,11 +75,11 @@ const NewsletterManager: React.FC = () => {
 	const handleDelete = async (issue: NewsletterIssue) => {
 		if (!window.confirm(`Delete "${issue.title}"? This cannot be undone.`)) return;
 		setBusyId(issue.id);
+		setLocalError(null);
 		try {
-			await deleteNewsletter(issue.id);
-			await fetchIssues();
+			await dispatch(removeNewsletterThunk(issue.id)).unwrap();
 		} catch (err) {
-			setError(getApiErrorMessage(err, 'Unable to delete newsletter.'));
+			setLocalError(err as string);
 		} finally {
 			setBusyId(null);
 		}

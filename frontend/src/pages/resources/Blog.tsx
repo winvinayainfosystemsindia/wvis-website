@@ -6,37 +6,25 @@ import BlogHero from '../../components/blog/BlogHero';
 import BlogPostCard from '../../components/blog/BlogPostCard';
 import WeeklyBriefCard from '../../components/blog/WeeklyBriefCard';
 import MustReadList from '../../components/blog/MustReadList';
-import { getPublishedBlogs } from '../../services/blogService';
-import { getApiErrorMessage } from '../../services/apiClient';
-import type { BlogPost } from '../../models/blog';
+import { useAppDispatch, useAppSelector } from '../../hooks/reduxHooks';
+import { fetchBlogsPublic } from '../../store/blogSlice';
 
 const ALL_LABEL = 'All';
 const POSTS_PER_PAGE = 6;
 
 const Blog: React.FC = () => {
 	const theme = useTheme();
-	const [posts, setPosts] = useState<BlogPost[]>([]);
-	const [loading, setLoading] = useState(true);
-	const [error, setError] = useState<string | null>(null);
+	const dispatch = useAppDispatch();
+	const posts = useAppSelector((state) => state.blogs.publicItems);
+	const status = useAppSelector((state) => state.blogs.publicStatus);
+	const error = useAppSelector((state) => state.blogs.publicError);
+	const loading = status === 'idle' || status === 'loading';
 	const [activeCategory, setActiveCategory] = useState(ALL_LABEL);
 	const [page, setPage] = useState(1);
 
 	useEffect(() => {
-		let isMounted = true;
-		(async () => {
-			try {
-				const data = await getPublishedBlogs();
-				if (isMounted) setPosts(data);
-			} catch (err) {
-				if (isMounted) setError(getApiErrorMessage(err, 'Unable to load blog posts right now.'));
-			} finally {
-				if (isMounted) setLoading(false);
-			}
-		})();
-		return () => {
-			isMounted = false;
-		};
-	}, []);
+		dispatch(fetchBlogsPublic());
+	}, [dispatch]);
 
 	const featured = posts[0];
 	const mustRead = posts.slice(1, 4);

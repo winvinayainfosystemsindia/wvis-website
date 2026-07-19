@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import { Box, Typography, TextField, Button, Alert, CircularProgress, useTheme } from '@mui/material';
-import { subscribeToNewsletter } from '../../services/newsletterService';
-import { getApiErrorMessage } from '../../services/apiClient';
+import { useAppDispatch } from '../../hooks/reduxHooks';
+import { subscribeToNewsletterThunk } from '../../store/newsletterSlice';
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 const WeeklyBriefCard: React.FC = () => {
 	const theme = useTheme();
+	const dispatch = useAppDispatch();
 	const [email, setEmail] = useState('');
 	const [submitting, setSubmitting] = useState(false);
 	const [error, setError] = useState<string | null>(null);
@@ -21,11 +22,11 @@ const WeeklyBriefCard: React.FC = () => {
 		setSubmitting(true);
 		setError(null);
 		try {
-			await subscribeToNewsletter(email);
+			await dispatch(subscribeToNewsletterThunk(email)).unwrap();
 			setSubscribed(true);
 			setEmail('');
 		} catch (err) {
-			setError(getApiErrorMessage(err, 'Unable to subscribe right now.'));
+			setError(err as string);
 		} finally {
 			setSubmitting(false);
 		}

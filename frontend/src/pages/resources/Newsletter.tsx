@@ -5,34 +5,21 @@ import MainLayout from '../../components/layout/MainLayout';
 import NewsletterIssueCard from '../../components/newsletter/NewsletterIssueCard';
 import LatestNewsletterFeature from '../../components/newsletter/LatestNewsletterFeature';
 import NewsletterSubscribeCta from '../../components/newsletter/NewsletterSubscribeCta';
-import { getPublishedNewsletters } from '../../services/newsletterService';
-import { getApiErrorMessage } from '../../services/apiClient';
-import type { NewsletterIssue } from '../../models/newsletter';
+import { useAppDispatch, useAppSelector } from '../../hooks/reduxHooks';
+import { fetchNewslettersPublic } from '../../store/newsletterSlice';
 
 const Newsletter: React.FC = () => {
 	const theme = useTheme();
-	const [issues, setIssues] = useState<NewsletterIssue[]>([]);
-	const [loading, setLoading] = useState(true);
-	const [error, setError] = useState<string | null>(null);
+	const dispatch = useAppDispatch();
+	const { publicItems: issues, publicStatus, publicError: error } = useAppSelector((state) => state.newsletters);
 	const [currentPage, setCurrentPage] = useState(1);
 	const [sortBy, setSortBy] = useState<'newest' | 'oldest'>('newest');
 
+	const loading = publicStatus === 'loading' || publicStatus === 'idle';
+
 	useEffect(() => {
-		let isMounted = true;
-		(async () => {
-			try {
-				const data = await getPublishedNewsletters();
-				if (isMounted) setIssues(data);
-			} catch (err) {
-				if (isMounted) setError(getApiErrorMessage(err, 'Unable to load newsletters right now.'));
-			} finally {
-				if (isMounted) setLoading(false);
-			}
-		})();
-		return () => {
-			isMounted = false;
-		};
-	}, []);
+		dispatch(fetchNewslettersPublic());
+	}, [dispatch]);
 
 	// Reset page when issues load, change, or sort order changes
 	useEffect(() => {

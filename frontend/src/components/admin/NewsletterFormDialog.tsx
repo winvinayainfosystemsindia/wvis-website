@@ -16,8 +16,9 @@ import {
 	Avatar,
 } from '@mui/material';
 import { CloudUpload, PictureAsPdf } from '@mui/icons-material';
-import { toMediaUrl, getApiErrorMessage } from '../../services/apiClient';
-import { createNewsletter, updateNewsletter } from '../../services/adminNewsletterService';
+import { useAppDispatch } from '../../hooks/reduxHooks';
+import { createNewsletterThunk, updateNewsletterThunk } from '../../store/newsletterSlice';
+import { toMediaUrl } from '../../services/apiClient';
 import type { NewsletterIssue } from '../../models/newsletter';
 
 interface NewsletterFormDialogProps {
@@ -37,6 +38,7 @@ const countWords = (text: string): number => {
 };
 
 const NewsletterFormDialog: React.FC<NewsletterFormDialogProps> = ({ open, issue, onClose, onSaved }) => {
+	const dispatch = useAppDispatch();
 	const isEditing = Boolean(issue);
 
 	const [title, setTitle] = useState('');
@@ -102,27 +104,34 @@ const NewsletterFormDialog: React.FC<NewsletterFormDialogProps> = ({ open, issue
 		setError(null);
 		try {
 			if (isEditing && issue) {
-				await updateNewsletter(issue.id, {
-					title,
-					description,
-					published_date: publishedDate,
-					is_published: isPublished,
-					coverImage,
-					pdfFile,
-				});
+				await dispatch(
+					updateNewsletterThunk({
+						id: issue.id,
+						payload: {
+							title,
+							description,
+							published_date: publishedDate,
+							is_published: isPublished,
+							coverImage,
+							pdfFile,
+						},
+					})
+				).unwrap();
 			} else {
-				await createNewsletter({
-					title,
-					description,
-					published_date: publishedDate,
-					is_published: isPublished,
-					coverImage,
-					pdfFile,
-				});
+				await dispatch(
+					createNewsletterThunk({
+						title,
+						description,
+						published_date: publishedDate,
+						is_published: isPublished,
+						coverImage,
+						pdfFile,
+					})
+				).unwrap();
 			}
 			onSaved();
 		} catch (err) {
-			setError(getApiErrorMessage(err, 'Something went wrong while saving the newsletter.'));
+			setError(err as string);
 		} finally {
 			setSubmitting(false);
 		}
