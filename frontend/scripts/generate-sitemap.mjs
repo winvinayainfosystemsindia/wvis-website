@@ -1,56 +1,71 @@
-// Generates public/sitemap.xml from the app's static route list.
-// Runs before `vite build` so the file is copied into dist/ automatically.
-import { writeFileSync } from 'fs';
-import { fileURLToPath } from 'url';
+// Generates public/sitemap.xml automatically from the app's actual routing config —
+// no hand-maintained URL list to keep in sync. Runs before `vite build` so the file
+// ends up in dist/ via Vite's public/ copy.
+//
+// Sources of truth (edit these, not this file, to change what's in the sitemap):
+//   - src/router/AppRouter.tsx        -> static page paths (<Route path="..." />)
+//   - src/data/shared/servicesData.ts -> valid /services/:serviceId slugs
+import { writeFileSync, readFileSync } from 'fs';
+import { fileURLToPath, pathToFileURL } from 'url';
 import path from 'path';
 
 const SITE_URL = process.env.VITE_SITE_URL || 'https://winvinaya.com';
 
-// Keep in sync with src/router/AppRouter.tsx and src/data/shared/navbarData.tsx.
-// changefreq/priority are hints for crawlers, not guarantees.
-const routes = [
-	{ path: '/', changefreq: 'weekly', priority: 1.0 },
-	{ path: '/who-we-are', changefreq: 'monthly', priority: 0.8 },
-	{ path: '/our-team', changefreq: 'monthly', priority: 0.6 },
-	{ path: '/careers', changefreq: 'weekly', priority: 0.7 },
-	{ path: '/products/nammacademy', changefreq: 'monthly', priority: 0.8 },
-	{ path: '/products/invoice-intelligence', changefreq: 'monthly', priority: 0.8 },
-	{ path: '/products/a11ysense-ai', changefreq: 'monthly', priority: 0.8 },
-	{ path: '/products/winvinaya-mis', changefreq: 'monthly', priority: 0.8 },
-	{ path: '/services/power-platform', changefreq: 'monthly', priority: 0.7 },
-	{ path: '/services/qa-testing', changefreq: 'monthly', priority: 0.7 },
-	{ path: '/services/custom-app-dev', changefreq: 'monthly', priority: 0.7 },
-	{ path: '/services/cloud-infra', changefreq: 'monthly', priority: 0.7 },
-	{ path: '/services/a11y-audit', changefreq: 'monthly', priority: 0.7 },
-	{ path: '/services/doc-remediation', changefreq: 'monthly', priority: 0.7 },
-	{ path: '/services/custom-built-mis', changefreq: 'monthly', priority: 0.7 },
-	{ path: '/services/digital-marketing', changefreq: 'monthly', priority: 0.7 },
-	{ path: '/services/operational-excellence', changefreq: 'monthly', priority: 0.7 },
-	{ path: '/services/inclusive-content', changefreq: 'monthly', priority: 0.7 },
-	{ path: '/services/corporate-training', changefreq: 'monthly', priority: 0.7 },
-	{ path: '/services/edu-training', changefreq: 'monthly', priority: 0.7 },
-	{ path: '/services/ngo-capacity', changefreq: 'monthly', priority: 0.7 },
-	{ path: '/services/disability-awareness', changefreq: 'monthly', priority: 0.7 },
-	{ path: '/services/dei-consulting', changefreq: 'monthly', priority: 0.7 },
-	{ path: '/services/ai-applications', changefreq: 'monthly', priority: 0.7 },
-	{ path: '/services/agentic-ai', changefreq: 'monthly', priority: 0.7 },
-	{ path: '/services/data-engineering', changefreq: 'monthly', priority: 0.7 },
-	{ path: '/services/doc-intelligence', changefreq: 'monthly', priority: 0.7 },
-	{ path: '/terms-of-service', changefreq: 'yearly', priority: 0.3 },
-	{ path: '/privacy-policy', changefreq: 'yearly', priority: 0.3 },
+const scriptDir = path.dirname(fileURLToPath(import.meta.url));
+const srcDir = path.join(scriptDir, '..', 'src');
+
+// Routes that exist in the app but shouldn't be indexed (utility/system pages,
+// not real content).
+const EXCLUDED_PATHS = new Set(['/maintenance']);
+
+// Priority/changefreq assigned by path prefix; first match wins.
+const SEO_RULES = [
+	{ test: (p) => p === '/', changefreq: 'weekly', priority: 1.0 },
+	{ test: (p) => p.startsWith('/products/'), changefreq: 'monthly', priority: 0.8 },
+	{ test: (p) => p.startsWith('/services/'), changefreq: 'monthly', priority: 0.7 },
+	{ test: (p) => p === '/careers', changefreq: 'weekly', priority: 0.7 },
+	{ test: (p) => p === '/who-we-are', changefreq: 'monthly', priority: 0.8 },
+	{ test: (p) => p === '/terms-of-service' || p === '/privacy-policy', changefreq: 'yearly', priority: 0.3 },
 ];
+const DEFAULT_RULE = { changefreq: 'monthly', priority: 0.6 };
+
+function seoFor(routePath) {
+	return SEO_RULES.find((rule) => rule.test(routePath)) ?? DEFAULT_RULE;
+}
+
+// --- 1. Static paths: parse <Route path="..."> straight out of AppRouter.tsx ---
+const routerSource = readFileSync(path.join(srcDir, 'router', 'AppRouter.tsx'), 'utf-8');
+const routeAttrPattern = /<Route\s[^>]*\bpath=(["'])(.*?)\1/g;
+
+const staticPaths = [];
+let match;
+while ((match = routeAttrPattern.exec(routerSource)) !== null) {
+	const routePath = match[2];
+	if (routePath === '*' || routePath.includes(':')) continue; // wildcard / dynamic segments handled separately
+	if (EXCLUDED_PATHS.has(routePath)) continue;
+	staticPaths.push(routePath);
+}
+
+// --- 2. Dynamic /services/:serviceId -> one URL per real service slug ---
+// servicesData.ts has no JSX, so Node can import it directly (type-stripped).
+const servicesDataPath = path.join(srcDir, 'data', 'shared', 'servicesData.ts');
+const { SERVICES_DATA } = await import(pathToFileURL(servicesDataPath).href);
+const servicePaths = Object.keys(SERVICES_DATA).map((slug) => `/services/${slug}`);
+
+const allPaths = [...new Set([...staticPaths, ...servicePaths])];
 
 const today = new Date().toISOString().split('T')[0];
 
-const urlEntries = routes
-	.map(
-		({ path: routePath, changefreq, priority }) => `  <url>
+const urlEntries = allPaths
+	.map((routePath) => {
+		const { changefreq, priority } = seoFor(routePath);
+		return `  <url>
     <loc>${SITE_URL}${routePath}</loc>
     <lastmod>${today}</lastmod>
     <changefreq>${changefreq}</changefreq>
     <priority>${priority.toFixed(1)}</priority>
-  </url>`
-	)
+  </url>`;
+	})
 	.join('\n');
 
 const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
@@ -59,8 +74,6 @@ ${urlEntries}
 </urlset>
 `;
 
-const outDir = path.dirname(fileURLToPath(import.meta.url));
-const outPath = path.join(outDir, '..', 'public', 'sitemap.xml');
-
+const outPath = path.join(scriptDir, '..', 'public', 'sitemap.xml');
 writeFileSync(outPath, sitemap, 'utf-8');
-console.log(`Sitemap written to ${outPath} (${routes.length} URLs)`);
+console.log(`Sitemap written to ${outPath} (${allPaths.length} URLs)`);
