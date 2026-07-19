@@ -22,4 +22,4 @@ async def get_blog_by_slug(
     db: AsyncSession = Depends(get_db)
 ):
     service = BlogService(db)
-    return await service.get_blog_by_slug(slug)
+    return await service.get_published_by_slug(slug)

@@ -6,6 +6,7 @@ class BlogBase(BaseSchema):
     slug: str
     summary: Optional[str] = None
     content: str
+    category: Optional[str] = None
     is_published: bool = False
     featured_image: Optional[str] = None
 
@@ -17,6 +18,7 @@ class BlogUpdate(BaseSchema):
     slug: Optional[str] = None
     summary: Optional[str] = None
     content: Optional[str] = None
+    category: Optional[str] = None
     is_published: Optional[bool] = None
     featured_image: Optional[str] = None
 

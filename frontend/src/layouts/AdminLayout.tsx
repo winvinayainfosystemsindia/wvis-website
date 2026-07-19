@@ -1,7 +1,7 @@
 import React, { type ReactNode } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { AppBar, Toolbar, Typography, Button, Box, Container, Chip } from '@mui/material';
-import { Logout } from '@mui/icons-material';
+import { useNavigate, useLocation, Link as RouterLink } from 'react-router-dom';
+import { AppBar, Toolbar, Typography, Button, Box, Container, Chip, Stack, alpha, useTheme } from '@mui/material';
+import { Logout, Newspaper, Article } from '@mui/icons-material';
 import { useAppDispatch, useAppSelector } from '../hooks/reduxHooks';
 import { loggedOut } from '../store/authSlice';
 import { clearToken } from '../services/tokenStore';
@@ -10,9 +10,16 @@ interface AdminLayoutProps {
 	children: ReactNode;
 }
 
+const NAV_LINKS = [
+	{ label: 'Newsletters', path: '/admin/newsletters', icon: <Newspaper fontSize="small" /> },
+	{ label: 'Blogs', path: '/admin/blogs', icon: <Article fontSize="small" /> },
+];
+
 const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
+	const theme = useTheme();
 	const dispatch = useAppDispatch();
 	const navigate = useNavigate();
+	const location = useLocation();
 	const user = useAppSelector((state) => state.auth.user);
 
 	const handleLogout = () => {
@@ -33,6 +40,30 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
 						Logout
 					</Button>
 				</Toolbar>
+				<Stack direction="row" spacing={0.5} sx={{ px: 3, pb: 1 }}>
+					{NAV_LINKS.map((link) => {
+						const active = location.pathname.startsWith(link.path);
+						return (
+							<Button
+								key={link.path}
+								component={RouterLink}
+								to={link.path}
+								startIcon={link.icon}
+								size="small"
+								sx={{
+									px: 2,
+									borderRadius: 2,
+									fontWeight: 600,
+									color: active ? 'primary.main' : 'text.secondary',
+									bgcolor: active ? alpha(theme.palette.primary.main, 0.08) : 'transparent',
+									'&:hover': { bgcolor: alpha(theme.palette.primary.main, 0.06) },
+								}}
+							>
+								{link.label}
+							</Button>
+						);
+					})}
+				</Stack>
 			</AppBar>
 			<Container maxWidth="lg" sx={{ py: 4 }}>
 				{children}

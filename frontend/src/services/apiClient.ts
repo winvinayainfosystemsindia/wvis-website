@@ -1,5 +1,7 @@
 import axios from 'axios';
 import { getToken, clearToken } from './tokenStore';
+import { store } from '../store';
+import { loggedOut } from '../store/authSlice';
 
 export const API_BASE_URL = import.meta.env.VITE_API_URL ?? 'http://localhost:8000';
 
@@ -21,6 +23,7 @@ apiClient.interceptors.response.use(
 	(error) => {
 		if (axios.isAxiosError(error) && error.response?.status === 401) {
 			clearToken();
+			store.dispatch(loggedOut());
 		}
 		return Promise.reject(error);
 	}

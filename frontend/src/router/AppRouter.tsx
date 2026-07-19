@@ -16,8 +16,11 @@ import ServiceDetail from '../pages/services/ServiceDetail';
 import Contact from '../pages/Contact';
 import Demo from '../pages/Demo';
 import Newsletter from '../pages/resources/Newsletter';
+import Blog from '../pages/resources/Blog';
+import BlogDetail from '../pages/resources/BlogDetail';
 import AdminLogin from '../pages/admin/AdminLogin';
 import NewsletterManager from '../pages/admin/NewsletterManager';
+import BlogManager from '../pages/admin/BlogManager';
 import ProtectedRoute from '../components/admin/ProtectedRoute';
 
 const AppRouter: React.FC = () => {
@@ -36,12 +39,22 @@ const AppRouter: React.FC = () => {
 			<Route path="/contact" element={<Contact />} />
 			<Route path="/demo" element={<Demo />} />
 			<Route path="/resources/newsletter" element={<Newsletter />} />
+			<Route path="/resources/blog" element={<Blog />} />
+			<Route path="/resources/blog/:slug" element={<BlogDetail />} />
 			<Route path="/admin/login" element={<AdminLogin />} />
 			<Route
 				path="/admin/newsletters"
 				element={
 					<ProtectedRoute>
 						<NewsletterManager />
+					</ProtectedRoute>
+				}
+			/>
+			<Route
+				path="/admin/blogs"
+				element={
+					<ProtectedRoute>
+						<BlogManager />
 					</ProtectedRoute>
 				}
 			/>
