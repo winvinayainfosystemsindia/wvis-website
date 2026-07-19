@@ -257,37 +257,6 @@ const Footer: React.FC = () => {
 						</Stack>
 					</Box>
 
-					{/* NGO Support */}
-					<Box sx={{ minWidth: 180 }}>
-						<Typography sx={{ ...theme.typography.footerHeader, mb: 2.5 }}>
-							NGO Support
-						</Typography>
-						<Stack spacing={1}>
-							{[
-								{ label: "Custom Built MIS", path: "/services/custom-built-mis" },
-								{ label: "NGO Capacity Building", path: "/services/ngo-capacity" },
-								{ label: "Digital Marketing & Design", path: "/services/digital-marketing" },
-								{ label: "Operational Excellence", path: "/services/operational-excellence" },
-								{ label: "Inclusive Content Creation", path: "/services/inclusive-content" },
-							].map((item) => (
-								<MuiLink
-									key={item.label}
-									component={Link}
-									to={item.path}
-									underline="none"
-									sx={{
-										...theme.typography.footerLink,
-										fontSize: "0.875rem",
-										transition: "color 0.2s ease",
-										"&:hover": { color: "primary.main", pl: 0.5 },
-									}}
-								>
-									{item.label}
-								</MuiLink>
-							))}
-						</Stack>
-					</Box>
-
 					{/* Products */}
 					<Box sx={{ minWidth: 180 }}>
 						<Typography sx={{ ...theme.typography.footerHeader, mb: 2.5 }}>
