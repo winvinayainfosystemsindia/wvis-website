@@ -18,9 +18,14 @@ import Demo from '../pages/Demo';
 import Newsletter from '../pages/resources/Newsletter';
 import Blog from '../pages/resources/Blog';
 import BlogDetail from '../pages/resources/BlogDetail';
+import CaseStudies from '../pages/resources/CaseStudies';
+import CaseStudyDetail from '../pages/resources/CaseStudyDetail';
+import MarketingPitch from '../pages/resources/MarketingPitch';
 import AdminLogin from '../pages/admin/AdminLogin';
 import NewsletterManager from '../pages/admin/NewsletterManager';
 import BlogManager from '../pages/admin/BlogManager';
+import CaseStudyManager from '../pages/admin/CaseStudyManager';
+import MarketingPitchManager from '../pages/admin/MarketingPitchManager';
 import ContactsManager from '../pages/admin/ContactsManager';
 import DemoRequestsManager from '../pages/admin/DemoRequestsManager';
 import ProtectedRoute from '../components/admin/ProtectedRoute';
@@ -43,6 +48,9 @@ const AppRouter: React.FC = () => {
 			<Route path="/resources/newsletter" element={<Newsletter />} />
 			<Route path="/resources/blog" element={<Blog />} />
 			<Route path="/resources/blog/:slug" element={<BlogDetail />} />
+			<Route path="/resources/case-studies" element={<CaseStudies />} />
+			<Route path="/resources/case-studies/:slug" element={<CaseStudyDetail />} />
+			<Route path="/resources/marketing-pitch" element={<MarketingPitch />} />
 			<Route path="/admin/login" element={<AdminLogin />} />
 			<Route
 				path="/admin/newsletters"
@@ -57,6 +65,22 @@ const AppRouter: React.FC = () => {
 				element={
 					<ProtectedRoute>
 						<BlogManager />
+					</ProtectedRoute>
+				}
+			/>
+			<Route
+				path="/admin/case-studies"
+				element={
+					<ProtectedRoute>
+						<CaseStudyManager />
+					</ProtectedRoute>
+				}
+			/>
+			<Route
+				path="/admin/marketing-pitches"
+				element={
+					<ProtectedRoute>
+						<MarketingPitchManager />
 					</ProtectedRoute>
 				}
 			/>
