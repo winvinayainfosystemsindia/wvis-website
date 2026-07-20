@@ -79,6 +79,9 @@ fi
 # Run database migrations (using Alembic)
 echo "🗄️ Running database migrations..."
 if [ -f "alembic.ini" ]; then
+    set -a
+    source <(grep -v '^#' "$ENV_FILE" | grep -v '^$' | sed 's/\r$//')
+    set +a
     alembic upgrade head
 else
     echo "Skipping migrations (alembic.ini not found)"
