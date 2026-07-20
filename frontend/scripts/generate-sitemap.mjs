@@ -17,6 +17,7 @@ const srcDir = path.join(scriptDir, '..', 'src');
 // Routes that exist in the app but shouldn't be indexed (utility/system pages,
 // not real content).
 const EXCLUDED_PATHS = new Set(['/maintenance']);
+const EXCLUDED_PREFIXES = ['/admin'];
 
 // Priority/changefreq assigned by path prefix; first match wins.
 const SEO_RULES = [
@@ -43,6 +44,7 @@ while ((match = routeAttrPattern.exec(routerSource)) !== null) {
 	const routePath = match[2];
 	if (routePath === '*' || routePath.includes(':')) continue; // wildcard / dynamic segments handled separately
 	if (EXCLUDED_PATHS.has(routePath)) continue;
+	if (EXCLUDED_PREFIXES.some((prefix) => routePath === prefix || routePath.startsWith(`${prefix}/`))) continue;
 	staticPaths.push(routePath);
 }
 
