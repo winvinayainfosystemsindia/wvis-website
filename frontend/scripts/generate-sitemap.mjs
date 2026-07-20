@@ -6,7 +6,7 @@
 //   - src/router/AppRouter.tsx        -> static page paths (<Route path="..." />)
 //   - src/data/shared/servicesData.ts -> valid /services/:serviceId slugs
 import { writeFileSync, readFileSync } from 'fs';
-import { fileURLToPath, pathToFileURL } from 'url';
+import { fileURLToPath } from 'url';
 import path from 'path';
 
 const SITE_URL = process.env.VITE_SITE_URL || 'https://winvinaya.com';
@@ -47,10 +47,17 @@ while ((match = routeAttrPattern.exec(routerSource)) !== null) {
 }
 
 // --- 2. Dynamic /services/:serviceId -> one URL per real service slug ---
-// servicesData.ts has no JSX, so Node can import it directly (type-stripped).
+// Parsed as text (not imported) so this script doesn't depend on the Node version's
+// TypeScript support — top-level SERVICES_DATA keys are single-tab-indented 'slug': {.
 const servicesDataPath = path.join(srcDir, 'data', 'shared', 'servicesData.ts');
-const { SERVICES_DATA } = await import(pathToFileURL(servicesDataPath).href);
-const servicePaths = Object.keys(SERVICES_DATA).map((slug) => `/services/${slug}`);
+const servicesDataSource = readFileSync(servicesDataPath, 'utf-8');
+const serviceKeyPattern = /^\t'([^']+)':\s*\{/gm;
+
+const servicePaths = [];
+let serviceMatch;
+while ((serviceMatch = serviceKeyPattern.exec(servicesDataSource)) !== null) {
+	servicePaths.push(`/services/${serviceMatch[1]}`);
+}
 
 const allPaths = [...new Set([...staticPaths, ...servicePaths])];
 
