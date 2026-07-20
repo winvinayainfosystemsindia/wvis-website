@@ -13,22 +13,23 @@ if [ -z "$ENV" ]; then
     exit 1
 fi
 
-# Environment-specific configurations
+# Environment-specific configurations. APP_NAME must match the app name in
+# ecosystem.config.js — that's what's actually running under PM2 (started in
+# Step 10 of the deployment doc), and ENV_FILE must match the ENV_FILE each
+# app is given there, since app/core/config.py reads POSTGRES_*/SECRET_KEY/etc.
+# from whatever file that variable points to (defaulting to .env otherwise).
 case $ENV in
     dev)
-        PORT=8000
-        APP_NAME="wvis-backend-dev"
-        ENV_FILE="backend/.env.dev"
+        APP_NAME="wvis-dev"
+        ENV_FILE=".env.dev"
         ;;
     qa)
-        PORT=8001
-        APP_NAME="wvis-backend-qa"
-        ENV_FILE="backend/.env.qa"
+        APP_NAME="wvis-qa"
+        ENV_FILE=".env.qa"
         ;;
     prod)
-        PORT=8002
-        APP_NAME="wvis-backend-prod"
-        ENV_FILE="backend/.env.prod"
+        APP_NAME="wvis-prod"
+        ENV_FILE=".env.prod"
         ;;
     *)
         echo "❌ Error: Invalid environment. Use dev, qa, or prod"
@@ -38,17 +39,17 @@ esac
 
 echo "================================"
 echo "🚀 Deploying Backend - $ENV"
-echo "App:  $APP_NAME"
-echo "Port: $PORT"
+echo "App: $APP_NAME"
 echo "================================"
 
 # Navigate to backend directory
 cd backend
 
-# Stop existing PM2 process safely
-echo "🛑 Stopping existing PM2 process..."
-pm2 stop $APP_NAME || true
-pm2 delete $APP_NAME || true
+# Verify env file (must exist before we can migrate or start the app)
+if [ ! -f "$ENV_FILE" ]; then
+    echo "❌ Error: Env file not found: backend/$ENV_FILE"
+    exit 1
+fi
 
 # Create virtual environment if missing
 if [ ! -d "venv-$ENV" ]; then
@@ -71,38 +72,29 @@ pip install --upgrade pip
 echo "📦 Installing dependencies..."
 pip install -r requirements.txt
 
-# Verify env file
-if [ ! -f "$ENV_FILE" ]; then
-    echo "⚠️ Warning: Env file not found: $ENV_FILE. Using existing .env if present."
-fi
-
 # Run database migrations (using Alembic)
 echo "🗄️ Running database migrations..."
 if [ -f "alembic.ini" ]; then
-    set -a
-    source <(grep -v '^#' "$ENV_FILE" | grep -v '^$' | sed 's/\r$//')
-    set +a
+    export ENV_FILE
     alembic upgrade head
 else
     echo "Skipping migrations (alembic.ini not found)"
 fi
 
-# Start backend using Waitress + PM2
-echo "▶️ Starting backend with PM2..."
-# We pass the PORT as an environment variable to wsgi.py
-export PORT=$PORT
-pm2 start wsgi.py \
-    --name "$APP_NAME" \
-    --interpreter venv-$ENV/bin/python \
-    --env PORT="$PORT"
+deactivate
 
-# Persist PM2 processes
+# Restart via the shared ecosystem.config.js so the running app keeps using the
+# same ENV_FILE/port PM2 already configured it with; start it if this is the
+# very first deploy and it isn't running yet.
+echo "▶️ Restarting backend with PM2..."
+pm2 restart "$APP_NAME" --update-env || pm2 start ecosystem.config.js --only "$APP_NAME"
+
+# Persist PM2 process list
 pm2 save
 
 echo "================================"
 echo "✅ Backend deployed successfully!"
 echo "Process: $APP_NAME"
-echo "Port:    $PORT"
 echo "================================"
 
 pm2 status "$APP_NAME"
