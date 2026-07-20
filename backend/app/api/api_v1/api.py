@@ -13,6 +13,8 @@ from app.api.api_v1.endpoints import (
     admin_case_studies,
     marketing_pitches,
     admin_marketing_pitches,
+    job_openings,
+    admin_job_openings,
 )
 
 api_router = APIRouter()
@@ -30,3 +32,5 @@ api_router.include_router(case_studies.router, prefix="/case-studies", tags=["ca
 api_router.include_router(admin_case_studies.router, prefix="/admin/case-studies", tags=["admin"])
 api_router.include_router(marketing_pitches.router, prefix="/marketing-pitches", tags=["marketing-pitches"])
 api_router.include_router(admin_marketing_pitches.router, prefix="/admin/marketing-pitches", tags=["admin"])
+api_router.include_router(job_openings.router, prefix="/job-openings", tags=["job-openings"])
+api_router.include_router(admin_job_openings.router, prefix="/admin/job-openings", tags=["admin"])

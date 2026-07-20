@@ -7,3 +7,4 @@ from app.models.demo_request import DemoRequest
 from app.models.newsletter_issue import NewsletterIssue
 from app.models.case_study import CaseStudy
 from app.models.marketing_pitch import MarketingPitch
+from app.models.job_opening import JobOpening

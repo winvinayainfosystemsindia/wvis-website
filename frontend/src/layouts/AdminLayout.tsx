@@ -1,7 +1,7 @@
 import React, { type ReactNode } from 'react';
 import { useNavigate, useLocation, Link as RouterLink } from 'react-router-dom';
 import { AppBar, Toolbar, Typography, Button, Box, Container, Chip, Stack, alpha, useTheme } from '@mui/material';
-import { Logout, Newspaper, Article, RocketLaunch, MailOutline, TrendingUp, Campaign } from '@mui/icons-material';
+import { Logout, Newspaper, Article, RocketLaunch, MailOutline, TrendingUp, Campaign, Work } from '@mui/icons-material';
 import { useAppDispatch, useAppSelector } from '../hooks/reduxHooks';
 import { loggedOut } from '../store/authSlice';
 import { clearToken } from '../services/tokenStore';
@@ -15,6 +15,7 @@ const NAV_LINKS = [
 	{ label: 'Blogs', path: '/admin/blogs', icon: <Article fontSize="small" /> },
 	{ label: 'Case Studies', path: '/admin/case-studies', icon: <TrendingUp fontSize="small" /> },
 	{ label: 'Marketing Pitch', path: '/admin/marketing-pitches', icon: <Campaign fontSize="small" /> },
+	{ label: 'Open Positions', path: '/admin/job-openings', icon: <Work fontSize="small" /> },
 	{ label: 'Demo Requests', path: '/admin/demo-requests', icon: <RocketLaunch fontSize="small" /> },
 	{ label: 'Contacts', path: '/admin/contacts', icon: <MailOutline fontSize="small" /> },
 ];

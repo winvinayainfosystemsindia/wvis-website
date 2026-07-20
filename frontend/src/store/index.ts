@@ -7,6 +7,7 @@ import caseStudyReducer from './caseStudySlice';
 import marketingPitchReducer from './marketingPitchSlice';
 import contactReducer from './contactSlice';
 import demoRequestReducer from './demoRequestSlice';
+import jobOpeningReducer from './jobOpeningSlice';
 
 export const store = configureStore({
 	reducer: {
@@ -19,6 +20,7 @@ export const store = configureStore({
 		marketingPitches: marketingPitchReducer,
 		contacts: contactReducer,
 		demoRequests: demoRequestReducer,
+		jobOpenings: jobOpeningReducer,
 	},
 });
 

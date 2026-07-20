@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import {
     Box,
     Container,
@@ -9,19 +9,33 @@ import {
     useTheme,
     alpha,
     useMediaQuery,
+    CircularProgress,
+    Alert,
 } from '@mui/material';
 import { LocationOn, Schedule, ArrowForward } from '@mui/icons-material';
 import { Link } from 'react-router-dom';
-import {
-    openPositionsData,
-    openPositionsHeader as header,
-    departments,
-} from '../../data/careers/openPositionsData';
+import { openPositionsHeader as header } from '../../data/careers/openPositionsData';
+import { useAppDispatch, useAppSelector } from '../../hooks/reduxHooks';
+import { fetchJobOpeningsPublic } from '../../store/jobOpeningSlice';
 
 const OpenPositions: React.FC = () => {
     const theme = useTheme();
     const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+    const dispatch = useAppDispatch();
+    const openPositionsData = useAppSelector((state) => state.jobOpenings.publicItems);
+    const status = useAppSelector((state) => state.jobOpenings.publicStatus);
+    const error = useAppSelector((state) => state.jobOpenings.publicError);
+    const loading = status === 'idle' || status === 'loading';
     const [activeFilter, setActiveFilter] = useState<string>(header.allLabel);
+
+    useEffect(() => {
+        dispatch(fetchJobOpeningsPublic());
+    }, [dispatch]);
+
+    const departments = useMemo(
+        () => Array.from(new Set(openPositionsData.map((p) => p.department))),
+        [openPositionsData]
+    );
 
     const filters = [header.allLabel, ...departments];
 
@@ -30,7 +44,7 @@ const OpenPositions: React.FC = () => {
             activeFilter === header.allLabel
                 ? openPositionsData
                 : openPositionsData.filter((p) => p.department === activeFilter),
-        [activeFilter]
+        [activeFilter, openPositionsData]
     );
 
     return (
@@ -128,6 +142,15 @@ const OpenPositions: React.FC = () => {
                 </Stack>
 
                 {/* Job cards */}
+                {loading && (
+                    <Stack alignItems="center" sx={{ py: 6 }}>
+                        <CircularProgress />
+                    </Stack>
+                )}
+
+                {!loading && error && <Alert severity="error">{error}</Alert>}
+
+                {!loading && !error && (
                 <Stack spacing={2.5}>
                     {visiblePositions.map((position) => (
                         <Box
@@ -184,7 +207,7 @@ const OpenPositions: React.FC = () => {
                                     <Stack direction="row" spacing={0.75} alignItems="center">
                                         <Schedule sx={{ fontSize: 16, color: 'text.secondary' }} aria-hidden="true" />
                                         <Typography variant="body2" sx={{ color: 'text.secondary', fontSize: '0.875rem' }}>
-                                            {position.type}
+                                            {position.job_type}
                                         </Typography>
                                     </Stack>
                                 </Stack>
@@ -221,6 +244,7 @@ const OpenPositions: React.FC = () => {
                         </Box>
                     )}
                 </Stack>
+                )}
             </Container>
         </Box>
     );

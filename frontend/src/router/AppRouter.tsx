@@ -28,6 +28,7 @@ import CaseStudyManager from '../pages/admin/CaseStudyManager';
 import MarketingPitchManager from '../pages/admin/MarketingPitchManager';
 import ContactsManager from '../pages/admin/ContactsManager';
 import DemoRequestsManager from '../pages/admin/DemoRequestsManager';
+import JobOpeningManager from '../pages/admin/JobOpeningManager';
 import ProtectedRoute from '../components/admin/ProtectedRoute';
 
 const AppRouter: React.FC = () => {
@@ -97,6 +98,14 @@ const AppRouter: React.FC = () => {
 				element={
 					<ProtectedRoute>
 						<ContactsManager />
+					</ProtectedRoute>
+				}
+			/>
+			<Route
+				path="/admin/job-openings"
+				element={
+					<ProtectedRoute>
+						<JobOpeningManager />
 					</ProtectedRoute>
 				}
 			/>
