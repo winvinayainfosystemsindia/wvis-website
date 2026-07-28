@@ -195,7 +195,7 @@ const Navbar: React.FC = () => {
 				anchor="right"
 				open={mobileOpen}
 				onClose={handleCloseAll}
-				PaperProps={{ sx: { width: '100%', maxWidth: 360 } }}
+				PaperProps={{ sx: { width: '100%', maxWidth: 360 }, 'data-lenis-prevent': true }}
 			>
 				<Box sx={{ p: 2, display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: 1, borderColor: 'divider' }}>
 					<Box component="img" src="/images/winvinayainfosystems_fulllogo.png" sx={{ height: 28 }} />
