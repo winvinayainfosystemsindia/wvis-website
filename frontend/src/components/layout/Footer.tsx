@@ -137,7 +137,7 @@ const Footer: React.FC = () => {
 									},
 									{
 										icon: YouTube,
-										url: "#", // add YouTube link when available
+										url: "https://www.youtube.com/@WinVinayaInfoSystems", // add YouTube link when available
 										label: "YouTube",
 									},
 								].map(({ icon: Icon, url, label }) => (
@@ -180,112 +180,112 @@ const Footer: React.FC = () => {
 						}}
 					>
 
-					{/* Quick Links */}
-					<Box sx={{ minWidth: 140 }}>
-						<Typography sx={{ ...theme.typography.footerHeader, mb: 2.5 }}>
-							Quick Links
-						</Typography>
-						<Stack spacing={1}>
-							{[
-								{ label: "Home", path: "/" },
-								{ label: "About Us", path: "/who-we-are" },
-								{ label: "Our Solutions", path: "/services" },
-								{ label: "Career", path: "/careers", hiring: true },
-								{ label: "Contact", path: "/contact" },
-							].map((item) => (
-								<Stack key={item.label} direction="row" spacing={1} alignItems="center">
+						{/* Quick Links */}
+						<Box sx={{ minWidth: 140 }}>
+							<Typography sx={{ ...theme.typography.footerHeader, mb: 2.5 }}>
+								Quick Links
+							</Typography>
+							<Stack spacing={1}>
+								{[
+									{ label: "Home", path: "/" },
+									{ label: "About Us", path: "/who-we-are" },
+									{ label: "Our Solutions", path: "/#our-solutions-section" },
+									{ label: "Career", path: "/careers", hiring: true },
+									{ label: "Contact", path: "/contact" },
+								].map((item) => (
+									<Stack key={item.label} direction="row" spacing={1} alignItems="center">
+										<MuiLink
+											component={Link}
+											to={item.path}
+											underline="none"
+											sx={{
+												...theme.typography.footerLink,
+												fontSize: "0.875rem",
+												transition: "color 0.2s ease, padding-left 0.2s ease",
+												"&:hover": { color: "primary.main", pl: 0.5 },
+											}}
+										>
+											{item.label}
+										</MuiLink>
+										{item.hiring && (
+											<Chip
+												label="HIRING"
+												size="small"
+												sx={{
+													height: 18,
+													fontSize: "0.625rem",
+													fontWeight: 600,
+													bgcolor: "#b5e3b5ff",
+													color: "#1a4d1aff",
+													"& .MuiChip-label": { px: 0.75 },
+												}}
+											/>
+										)}
+									</Stack>
+								))}
+							</Stack>
+						</Box>
+
+						{/* IT Consultancy */}
+						<Box sx={{ minWidth: 180 }}>
+							<Typography sx={{ ...theme.typography.footerHeader, mb: 2.5 }}>
+								IT Consultancy
+							</Typography>
+							<Stack spacing={1}>
+								{[
+									{ label: "Microsoft Power Platform Solutions", path: "/services/power-platform" },
+									{ label: "Corporate Training", path: "/services/corporate-training" },
+									{ label: "Custom Application Development", path: "/services/custom-app-dev" },
+									{ label: "Software Testing", path: "/services/qa-testing" },
+									{ label: "Accessibility Audit", path: "/services/a11y-audit" },
+								].map((item) => (
 									<MuiLink
+										key={item.label}
 										component={Link}
 										to={item.path}
 										underline="none"
 										sx={{
 											...theme.typography.footerLink,
 											fontSize: "0.875rem",
-											transition: "color 0.2s ease, padding-left 0.2s ease",
+											transition: "color 0.2s ease",
 											"&:hover": { color: "primary.main", pl: 0.5 },
 										}}
 									>
 										{item.label}
 									</MuiLink>
-									{item.hiring && (
-										<Chip
-											label="HIRING"
-											size="small"
-											sx={{
-												height: 18,
-												fontSize: "0.625rem",
-												fontWeight: 600,
-												bgcolor: "#b5e3b5ff",
-												color: "#1a4d1aff",
-												"& .MuiChip-label": { px: 0.75 },
-											}}
-										/>
-									)}
-								</Stack>
-							))}
-						</Stack>
-					</Box>
+								))}
+							</Stack>
+						</Box>
 
-					{/* IT Consultancy */}
-					<Box sx={{ minWidth: 180 }}>
-						<Typography sx={{ ...theme.typography.footerHeader, mb: 2.5 }}>
-							IT Consultancy
-						</Typography>
-						<Stack spacing={1}>
-							{[
-								{ label: "Microsoft Power Platform Solutions", path: "/services/power-platform" },
-								{ label: "Corporate Training", path: "/services/corporate-training" },
-								{ label: "Custom Application Development", path: "/services/custom-app-dev" },
-								{ label: "Software Testing", path: "/services/qa-testing" },
-								{ label: "Accessibility Audit", path: "/services/a11y-audit" },
-							].map((item) => (
-								<MuiLink
-									key={item.label}
-									component={Link}
-									to={item.path}
-									underline="none"
-									sx={{
-										...theme.typography.footerLink,
-										fontSize: "0.875rem",
-										transition: "color 0.2s ease",
-										"&:hover": { color: "primary.main", pl: 0.5 },
-									}}
-								>
-									{item.label}
-								</MuiLink>
-							))}
-						</Stack>
-					</Box>
-
-					{/* Products */}
-					<Box sx={{ minWidth: 180 }}>
-						<Typography sx={{ ...theme.typography.footerHeader, mb: 2.5 }}>
-							Products
-						</Typography>
-						<Stack spacing={1}>
-							{[
-								{ label: "A11ySense AI", path: "/products/a11ysense-ai" },
-								{ label: "WinVinaya MIS", path: "/products/winvinaya-mis" },
-								{ label: "NammAcademy", path: "/products/nammacademy" },
-								{ label: "Invoice Intelligence", path: "/products/invoice-intelligence" },
-							].map((item) => (
-								<MuiLink
-									key={item.label}
-									component={Link}
-									to={item.path}
-									underline="none"
-									sx={{
-										...theme.typography.footerLink,
-										fontSize: "0.875rem",
-										transition: "color 0.2s ease",
-										"&:hover": { color: "primary.main", pl: 0.5 },
-									}}
-								>
-									{item.label}
-								</MuiLink>
-							))}
-						</Stack>
-					</Box>
+						{/* Products */}
+						<Box sx={{ minWidth: 180 }}>
+							<Typography sx={{ ...theme.typography.footerHeader, mb: 2.5 }}>
+								Products
+							</Typography>
+							<Stack spacing={1}>
+								{[
+									{ label: "A11ySense AI", path: "/products/a11ysense-ai" },
+									{ label: "WinVinaya MIS", path: "/products/winvinaya-mis" },
+									{ label: "NammAcademy", path: "/products/nammacademy" },
+									{ label: "Invoice Intelligence", path: "/products/invoice-intelligence" },
+								].map((item) => (
+									<MuiLink
+										key={item.label}
+										component={Link}
+										to={item.path}
+										underline="none"
+										sx={{
+											...theme.typography.footerLink,
+											fontSize: "0.875rem",
+											transition: "color 0.2s ease",
+											"&:hover": { color: "primary.main", pl: 0.5 },
+										}}
+									>
+										{item.label}
+									</MuiLink>
+								))}
+							</Stack>
+						</Box>
 					</Box>
 				</Box>
 
