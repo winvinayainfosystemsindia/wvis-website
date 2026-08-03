@@ -1,0 +1,22 @@
+.gitignore
+initialsetup.txt
+wvis_website_2.0.pem
+/docs
+
+# Python
+venv/
+.env/
+__pycache__/
+*.pyc
+.env
+.env.*
+!.env.*.example
+
+# IDE folders
+.antigravity/
+.workspace/
+.cache/
+.idea/
+.vscode/
+extensions/
+packages/
