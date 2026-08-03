@@ -93,7 +93,6 @@ const MegaMenu: React.FC<MegaMenuProps> = ({ activeMenu, onClose, navbarHeight }
 			anchor="top"
 			open={Boolean(activeMenu)}
 			onClose={onClose}
-			slotProps={{ paper: { 'data-lenis-prevent': true } as Record<string, unknown> }}
 			sx={{
 				zIndex: theme.zIndex.drawer + 1,
 				'& .MuiDrawer-paper': {

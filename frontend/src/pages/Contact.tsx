@@ -13,9 +13,7 @@ const Contact: React.FC = () => {
 				subtitle="Have a question about our services, a project in mind, or just want to say hello? Our team is here to help — reach out and we'll get back to you within one business day."
 			/>
 
-			<Box component="section"
-				id="contact"
-				sx={{ pb: { xs: 8, md: 12 } }}>
+			<Box component="section" sx={{ pb: { xs: 8, md: 12 } }}>
 				<Container maxWidth="lg">
 					<Grid container spacing={{ xs: 5, md: 6 }}>
 						<Grid size={{ xs: 12, md: 4 }}>

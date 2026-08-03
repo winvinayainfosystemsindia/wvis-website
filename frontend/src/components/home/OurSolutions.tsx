@@ -476,10 +476,10 @@ const OurSolutions: React.FC = () => {
 							</Box>
 
 							{/* Dot indicators */}
-							<Stack
-								direction="row"
-								spacing={1}
-								justifyContent="center"
+							<Stack 
+								direction="row" 
+								spacing={1} 
+								justifyContent="center" 
 								role="tablist"
 								aria-label="Solution Slide Indicators"
 								sx={{ position: 'relative', zIndex: 1 }}

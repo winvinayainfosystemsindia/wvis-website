@@ -24,17 +24,17 @@ export const accessibilityData = {
 	],
 	services: [
 		{
-			title: 'Certified Accessibility Audits',
-			description: 'Accessibility audits aligned with WCAG 2.1, Section 508, EN 301 549, and GIGW standards.',
+			title: 'WCAG 2.1 AA/AAA Audits',
+			description: 'Comprehensive audits of web and mobile applications against international accessibility standards.',
 		},
 		{
 			title: 'PDF/UA Document Remediation',
-			description: 'Convert educational, financial, legal, multilingual, and handwritten content into accessible digital formats.',
+			description: 'Convert inaccessible documents into fully compliant, screen-reader-friendly PDFs.',
 		},
-		// {
-		// 	title: 'Screen Reader & Keyboard Fixes',
-		// 	description: 'Hands-on remediation of navigation, focus management, and assistive technology compatibility.',
-		// },
+		{
+			title: 'Screen Reader & Keyboard Fixes',
+			description: 'Hands-on remediation of navigation, focus management, and assistive technology compatibility.',
+		},
 		{
 			title: 'Inclusive UX Design Reviews',
 			description: 'Design audits and recommendations to embed accessibility into your product from day one.',
